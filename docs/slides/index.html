@@ -309,7 +309,7 @@ element( by.model('zipcode') ).getText()
 
 				<section>
 					<h2>Control Flow</h2>
-					<p>WebDriverJS maintains a queue of pending promises, called the <a href="https://github.com/angular/protractor/blob/master/docs/control-flow.md">control flow</a>, to keep execution organized.</p>
+					<p>WebDriverJS maintains a queue of pending promises, called the <a href="https://github.com/angular/protractor/blob/master/docs/control-flow.md">control flow</a>, to keep execution organized. </p>
 <pre><code>it('should find an element by text input model', function() {
   browser.get('#/home'); // (1) method browser.get
 
@@ -319,16 +319,26 @@ element( by.model('zipcode') ).getText()
   expect(login.getText()).toEqual('User');
 });</code></pre>
 					<p style="font-size: .6em;text-align: left;line-height: 140%;">In the example above, the control flow would execute the queue following the sequence we see in the comments. Basically method <code>by.binding</code>  would only run once <code>browser.get</code> promise is resolved, and so on.</p>
+					<p>So, you don't need to worry about calling runs() and waitsFor() blocks.</p>
 				</section>
 
 				<section>
 					<h2 class="slide-header">Debugging using elementexplorer</h2>
 					<ol>
-						<li>Start your webdriver server:<br>
-							<code>webdriver-manager start</code>
-						</li>
-						<li>Run:<br> <code style="font-size: 16px">/usr/local/lib/node_modules/protractor/bin/<strong>elementexplorer.js</strong> http://angularjs.org</code></li>
-						<li>Press 'tab' and play with any element locator.</li>
+						<li>For interactive invoking of webdriver commands</li>
+						<li>run protractor as you normally would,
+						<br>but pass in the flag --elementExplorer:
+						<br>
+						<code style="font-size: 16px">protractor --elementExplorer</code>
+						<br>
+						or run <code
+                style="font-size: 16px">./node_modules/protractor/bin/<strong>elementexplorer.js</strong></code></li>
+						<li>Press 'tab' for sugestions and play with any element locator.</li>
+						<li>
+				            <a href="http://angular.github.io/protractor/#/debugging">
+				                Find out more.
+				            </a>
+				        </li>
 					</ol>
 				</section>
 
@@ -355,13 +365,17 @@ element( by.model('zipcode') ).getText()
   |-- tests/
     |-- unit/
     |-- e2e/
-    |    |-- homepage/
-    |    |     |-- homepage.po.js
+    |    |-- authentication/
     |    |     |-- *.spec.js
-    |    |-- profile/
-    |    |     |-- profile.po.js
+    |    |-- jobs/
     |    |     |-- *.spec.js
-    |    |-- config.js
+    |    |-- pages/
+    |    |     |-- home.page.js
+    |    |     |-- login.page.js
+    |    |     |-- register.page.js
+    |    |     |-- jobs.list.apply.page.js
+    |    |     |-- *.page.js
+    |    |-- protractor.conf.js
 </code></pre>
 				</section>
 
@@ -476,7 +490,7 @@ describe('HomePage Tests', function() {
 				<section>
 					<h2>Using <code>onPrepare</code></h2>
 					<p><strong>Export xml results of your Automated Suites</strong></p>
-					<pre><code data-trim>//config.js
+					<pre><code data-trim>//protractor.conf.js
 exports.config = {
   onPrepare: function() {
     var folderName = (new Date()).toString().split(' ').splice(1, 4).join(' ');
@@ -497,7 +511,7 @@ exports.config = {
 
 				<section>
 					<h2 class="slide-header">Using <code>params</code></h2>
-					<p>Your config.js</p>
+					<p>Your protractor.conf.js</p>
 					<pre><code data-trim>exports.config = {
   seleniumAddress: 'http://localhost:4444/wd/hub',
 
@@ -600,10 +614,10 @@ browser.driver.findElement(by.css('[data-ptor="submit-btn"]'));
 				</section>
 
 				<section>
-					<h2 style="margin-top:70px;font-size:4em">Bonus</h2>
+					<h2 style="margin-top:70px;font-size:4em">Demo time</h2>
 				</section>
 
-				<section>
+				<!--section>
 					<h2 class="slide-header" style="margin-bottom:.3em"><a href="https://github.com/ramonvictor/gulp-protractor-qa">gulp-protractor-qa</a></h2>
 					<p style="font-size:.6em;margin-bottom:1.4em">It warns you on the fly whether all element() selectors could be found within your AngularJS view files.</p>
 					<img style="border: none" src="https://raw.githubusercontent.com/ramonvictor/gulp-protractor-qa/master/assets/gulp-protractor-qa.gif" alt="Video screen demo of gulp-protractor-qa in action!">
@@ -612,6 +626,17 @@ browser.driver.findElement(by.css('[data-ptor="submit-btn"]'));
 				<section>
 					<h2 style="font-size: 1.8em;">How to use <a href="https://github.com/ramonvictor/gulp-protractor-qa">gulp-protractor-qa</a>?</h2>
 					<iframe width="740" height="416" src="//www.youtube.com/embed/mhJDhIvaKJo" frameborder="0" allowfullscreen></iframe>
+				</section-->
+
+				<section>
+				    <h2 class="slide-header">The dark side of E2E testing and it's solutions</h2>
+				    <ul>
+				        <li>It needs a specific running environment<br/><strong>(use node.js, protractor, web-driver)</strong></li>
+				        <li>It's hard to write <strong>(use page objects)</strong></li>
+				        <li>It's difficult to debug <strong>(use elementexplorer)</strong></li>
+				        <li>They are fragile <strong>(use continuous integration tools)</strong></li>
+				        <li>It's hard to keep the tests up-to-date<br/><strong>(test functionality, not data)</strong></li>
+				    </ul>
 				</section>
 
 				<section>
@@ -639,9 +664,9 @@ browser.driver.findElement(by.css('[data-ptor="submit-btn"]'));
 				<section>
 					<h3 style="font-size:3em;margin-top:30px;margin-bottom:.5em">Thank you :)</h3>
 					<p style="font-size:2em; margin-bottom: 2em">
-						<a href="https://github.com/ramonvictor">@ramonvictor</a>
+						<a href="https://github.com/gaurav2github">@gaurav2github</a>
 					</p>
-					<p>Thanks to <a href="https://github.com/rafaelbattesti">@rafaelbattesti</a> contributions!</p>
+					<p>Thanks to <a href="https://github.com/ramonvictor">@ramonvictor</a> contributions!</p>
 				</section>
 			</div>
 		</div>
