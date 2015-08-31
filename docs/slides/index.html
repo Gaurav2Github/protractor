@@ -68,25 +68,18 @@
 					<h2 class="slide-header">Whats the idea behind E2E testing?</h2>
 					<ul>
 						<li>How would the users see my application?</li>
+						<li>Frequent regression testing.</li>
 						<li>Is my backend communicating with my frontend?</li>
+						<li>Rapid feedback is available.</li>
 						<li>Can I release this code?</li>
 						<li>It does <strong>NOT</strong> replace Unit Testing!</li>
 					</ul>
 				</section>
 
-				<section>
-					<h2 class="slide-header">The dark side of E2E testing</h2>
-					<ul>
-						<li>It needs a specific running environment</li>
-						<li>It's hard to write</li>
-						<li>It's difficult to debug</li>
-						<li>It's hard to keep the tests up-to-date</li>
-					</ul>
-				</section>
 
 				<section>
 					<a href="https://github.com/angular/protractor/">
-						<img src="img/protractor-on-github.png" width="900" alt="">
+						<img src="img/protractor_contribution.png" width="900" alt="">
 					</a>
 				</section>
 
@@ -189,11 +182,8 @@ describe('angularjs homepage', function() {
 
 				<section>
 					<h2 class="slide-header">Let's run it?</h2>
-					<p>First things first, open the terminal and start the webdriver server:
-					</p>
-					<pre style="margin-bottom:40px"><code>webdriver-manager start</code></pre>
-					<p>After that, you can run Protractor in another terminal by typing:</p>
-					<pre><code>protractor test/e2e/config.js // this is the relative path to your config.js file</code></pre>
+					<p>You can run Protractor on a terminal by typing:</p>
+					<pre><code>protractor test/e2e/protractor.conf.js // this is the relative path to your config file</code></pre>
 				</section>
 
 				<section>
@@ -325,15 +315,15 @@ element( by.model('zipcode') ).getText()
 				<section>
 					<h2 class="slide-header">Debugging using elementexplorer</h2>
 					<ol>
-						<li>For interactive invoking of webdriver commands</li>
-						<li>run protractor as you normally would,
-						<br>but pass in the flag --elementExplorer:
-						<br>
+						<li>Run:
 						<code style="font-size: 16px">protractor --elementExplorer</code>
 						<br>
-						or run <code
+						or <code
                 style="font-size: 16px">./node_modules/protractor/bin/<strong>elementexplorer.js</strong></code></li>
-						<li>Press 'tab' for sugestions and play with any element locator.</li>
+						<li>This starts a selenium standalone server and puts the terminal into a read–eval–print loop (REPL).</li>
+						<li>For interactive invoking of webdriver commands</li>
+						
+						<li>Press 'tab' for list of locator strategies and play with any element locator.</li>
 						<li>
 				            <a href="http://angular.github.io/protractor/#/debugging">
 				                Find out more.
@@ -481,32 +471,31 @@ describe('HomePage Tests', function() {
 				</section>
 				<section>
 					<h2>Using <code>onPrepare</code></h2>
-					<p><strong>Export xml results of your Automated Suites</strong></p>
-					<p style="text-align:left;font-size:.8em;">First, install jasmine-reporters:</p>
-					<pre class="mb-30"><code data-trim>npm install jasmine-reporters</code></pre>
-					<p style="text-align:left;font-size:.8em;">And to keep xml results in Timestamp directories, install mkdirp package:</p>
-					<pre><code data-trim>npm install mkdirp</code></pre>
+					<p><strong>Get HTML report and Capture a screenshot of failed specs of your Automated Suites.</strong></p>
+					<p style="text-align:left;font-size:.8em;">First, install protractor-jasmine2-screenshot-reporter:</p>
+					<pre class="mb-30"><code data-trim>npm install protractor-jasmine2-screenshot-reporter --save-dev</code></pre>
+					
 				</section>
 				<section>
 					<h2>Using <code>onPrepare</code></h2>
-					<p><strong>Export xml results of your Automated Suites</strong></p>
+					<p><strong>Get HTML report and Capture a screenshot of failed specs of your Automated Suites.</strong></p>
 					<pre><code data-trim>//protractor.conf.js
-exports.config = {
-  onPrepare: function() {
-    var folderName = (new Date()).toString().split(' ').splice(1, 4).join(' ');
-    var mkdirp = require('mkdirp');
-    var newFolder = "./reports/" + folderName;
-    require('jasmine-reporters');
+var HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
 
-    mkdirp(newFolder, function(err) {
-      if (err) {
-        console.error(err);
-      } else {
-        jasmine.getEnv().addReporter(new jasmine.JUnitXmlReporter(newFolder, true, true));
-      }
-    });
-  },
-};</code></pre>
+exports.config = {
+   // ...
+
+   onPrepare: function() {
+      jasmine.getEnv().addReporter(
+		    new HtmlScreenshotReporter({
+			      dest: 'test/report',
+			      filename: 'test-report.html',
+			      captureOnlyFailedSpecs: true,
+			      reportOnlyFailedSpecs: false
+		    })
+  		);
+  }
+  };</code></pre>
 				</section>
 
 				<section>
@@ -638,6 +627,24 @@ browser.driver.findElement(by.css('[data-ptor="submit-btn"]'));
 				        <li>It's hard to keep the tests up-to-date<br/><strong>(test functionality, not data)</strong></li>
 				    </ul>
 				</section>
+
+				<section>
+				    <h2 class="slide-header">Software testing pyramid</h2>
+				    <img src="img/automated-testing-pyramid.png"/>
+
+				    <p>Reference: <a href="http://watirmelon.com/2011/06/10/yet-another-software-testing-pyramid/">http://watirmelon.com/2011/06/10/yet-another-software-testing-pyramid/</a>
+				    </p>
+				</section>
+
+				<section>
+				    <h2>Software testing pyramid</h2>
+				    <img src="img/business-technology-automated-testing-pyramid.png"/>
+
+				    <p>Reference: <a href="http://watirmelon.com/2011/06/10/yet-another-software-testing-pyramid/">http://watirmelon.com/2011/06/10/yet-another-software-testing-pyramid/</a>
+				    </p>
+				</section>
+
+
 
 				<section>
 					<h2 class="slide-header">Final thoughts</h2>
