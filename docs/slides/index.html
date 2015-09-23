@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Protractor for AngularJS: writing end-to-end tests has never been so fun</title>
+		<title>Protractor for AngularJS Apps: Writing end-to-end tests has never been so easy</title>
 
 		<meta name="description" content="A step-by-step presentaion on Protractor End-to-End Testing for AngularJS">
 		<meta name="author" content="Gaurav Tandon | @gaurav2github">
@@ -36,13 +36,18 @@
 			<div class="slides">
 
 				<section>
-					<h1 style="margin: 50px 0 .3em">Protractor for AngularJS Web Apps</h1>
-					<h3 style="font-size:1.2em;margin-bottom:2em">Writing end-to-end tests has never been so fun</h3>
+					<h1 style="margin: 50px 0 .3em">Using Protractor for AngularJS e2e testing</h1>
+					
 					 <p>
-				        <a href="https://github.com/gaurav2github">Gaurav Tandon</a>
+				        <a target="blank" href="https://github.com/gaurav2github">@Gaurav Tandon</a>
+				    </p>
+				    <p>&nbsp;</p>
+				    <p>&nbsp;</p>
+				    <p>
+				    	Based on the slides by <a target="blank" href="https://github.com/ramonvictor">@ramonvictor</a> available <a target="blank" href="https://github.com/ramonvictor/rv-protractor">here</a>
 				    </p>
 
-				    <p>&nbsp;</p>
+				    
 
 				</section>
 
@@ -73,7 +78,7 @@
 
 
 				<section>
-					<a href="https://github.com/angular/protractor/">
+					<a target="blank" href="https://github.com/angular/protractor/">
 						<img src="img/protractor_contribution.png" width="900" alt="">
 					</a>
 				</section>
@@ -82,7 +87,7 @@
 					<h2 class="slide-header">Protractor is built on top of <a href="https://code.google.com/p/selenium/wiki/WebDriverJs">WebDriverJS</a></h2>
 
 					<p style="text-align: center">
-						<strong>Testing system</strong> (NodeJS, Java, etc)
+						<strong>Testing system</strong> (NodeJS program)
 					</p>
 					<p style="text-align: center">
 						|
@@ -109,50 +114,50 @@
 						<li>
 							Download <a href="http://nodejs.org/download/">Node.JS</a>
 						</li>
-						<li><code>sudo npm install protractor -g</code></li>
-						<li><code>sudo webdriver-manager update</code></li>
+						<li><code>npm install protractor -g</code></li>
+						<li><code>webdriver-manager update</code></li>
 					</ol>
 
 				</section>
 
 				<section>
 					<h2 class="slide-header">Setup a conf.js file</h2>
+					
 					<pre><code>exports.config = {
-  seleniumAddress: 'http://localhost:4444/wd/hub',
+
+  directConnect: true,
 
   capabilities: {
     'browserName': 'chrome'
   },
 
-  specs: ['example-spec.js'],
+  specs: [
+  'e2e/specs/*.js'
+  ],
+
+  framework: 'jasmine2',
 
   jasmineNodeOpts: {
-    showColors: true
+    defaultTimeoutInterval: 20000
   }
+
 };
 </code></pre>
+<p align="left">The reference <a target="blank" href="https://github.com/angular/protractor/blob/master/docs/referenceConf.js"> config</a> file </p>
 				</section>
 
 				<section>
 					<h2 class="slide-header">Write your tests using <a href="http://jasmine.github.io/2.0/introduction.html">Jasmine</a> and WebdriverJS</h2>
-<pre><code>describe('by model', function() {
-   it('should find an element by text input model', function() {
-     var username = element(by.model('username'));
-     var name = element(by.binding('username'));
 
-     username.clear();
-     expect(name.getText()).toEqual('');
-
-     username.sendKeys('Jane Doe');
-     expect(name.getText()).toEqual('Jane Doe');
-   });
-});</code></pre>
+				<p>We will use <code>describe</code> and <code>it</code> syntax from the Jasmine framework.</p>
+				<p>
+				<p>And be using <code>browser</code> variable, which is a wrapper around an instance of WebDriver</p>
 				</section>
 
 				<section>
 					<h2 class="slide-header">Protractor global variables</h2>
 					<ul>
-						<li><code>browser</code>: <code>browser.get()</code></li>
+						<li><code>browser</code>: <code>browser.get()</code> <code>browser.param</code> <code>..</code></li>
 						<li><code>element</code> and <code>by</code>: <code>element(by.model('yourName'))</code></li>
 						<li><code>protractor</code>: <code>protractor.Key</code></li>
 					</ul>
@@ -160,19 +165,30 @@
 
 				<section>
 					<h2>Basic example</h2>
-					<pre><code style="font-size:20px;line-height:1em">// example-spec.js
-describe('angularjs homepage', function() {
-  it('should greet the named user', function() {
-    browser.get('http://www.angularjs.org');
-
-    element(by.model('yourName')).sendKeys('Julie');
-
-    var greeting = element(by.binding('yourName'));
-
-    expect(greeting.getText()).toEqual('Hello Julie!');
-  });
-});
+				<h3 style="font-size:1em">In the basic angular app</h3>
+					<pre><code> &lt;div>
+      &lt;label>Name:&lt;/label>
+      &lt;input type="text" ng-model="yourName" placeholder="Enter a name here">
+      &lt;h1>Hello {{yourName}}!&lt;/h1>
+    &lt;/div>
 </code></pre>
+<p></p>
+<h3 style="font-size:1em">In the test</h3>
+<pre><code>
+describe('by model', function() {
+   it('should find an element by text input model', function() {
+     browser.get('https://angularjs.org/');
+     var yourName = element(by.model('yourName'));
+     var greeting = element(by.binding('yourName'));
+
+     yourName.clear();
+     expect(greeting.getText()).toEqual('');
+
+     yourName.sendKeys('Jasmine');
+     expect(greeting.getText()).toEqual('Jasmine');
+   });
+});</code></pre>
+
 				</section>
 
 				<section>
@@ -188,10 +204,10 @@ describe('angularjs homepage', function() {
 				<section>
 					<h2 class="slide-header" style="font-size:1.5em;"><code>element()</code> vs <code>element.all()</code></h2>
 					<p>Single element</p>
-					<pre class="mb-30"><code>element( by.binding('appName') );</code></pre>
+					<pre class="mb-30"><code>element(by.binding('latest'));</code></pre>
 					<p>Collection of elements</p>
-					<pre><code>// clicks the 3rd element
-element.all( by.css('[ng-click="openPage()"]') ).get(2).click();</code></pre>
+					<pre><code>// get elements count
+element.all(by.repeater('result in memory')).count();</code></pre>
 				</section>
 
 				<section>
@@ -201,7 +217,7 @@ element.all( by.css('[ng-click="openPage()"]') ).get(2).click();</code></pre>
 					<h3 style="font-size:1em">In your application</h3>
 					<pre><code>&lt;span ng-bind="myModel">&lt;/span>
 &lt;!-- or -->
-&lt;span>{{myModel}}&lt;/span>
+&lt;span>{myModel}&lt;/span>
 </code></pre>
 				</section>
 
@@ -215,11 +231,11 @@ element.all( by.css('[ng-click="openPage()"]') ).get(2).click();</code></pre>
 				<section>
 					<h2><code>by.repeater</code></h2>
 					<h3 style="font-size:1em">In your test</h3>
-					<pre class="mb-30"><code>element( by.repeater('user in users').row(0).column('name') );</code></pre>
+					<pre class="mb-30"><code>element.all( by.repeater('user in users').column('user.name') );</code></pre>
 					<h3 style="font-size:1em">In your application</h3>
 					<pre><code>&lt;ul>
   &lt;li ng-repeat="user in users">
-      &lt;span>{{user.name}}&lt;/span>
+      &lt;span>{user.name}&lt;/span>
   &lt;/li>
 &lt;/ul></code></pre>
 				</section>
@@ -228,6 +244,8 @@ element.all( by.css('[ng-click="openPage()"]') ).get(2).click();</code></pre>
 					<h2><code>by.css</code></h2>
 					<h3 style="font-size:1em">In your test</h3>
 					<pre class="mb-30"><code>element( by.css('[ng-click="sendMail()"]') );</code></pre>
+					or
+					<pre class="mb-30"><code>$('[ng-click="sendMail()"]');</code></pre>
 					<h3 style="font-size:1em">In your application</h3>
 					<pre><code>&lt;button ng-click="sendMail()">Send mail!&lt;/button></code></pre>
 				</section>
@@ -235,11 +253,12 @@ element.all( by.css('[ng-click="openPage()"]') ).get(2).click();</code></pre>
 				<section>
 					<h2 style="font-size: 1.8em">Find out more in Protractor API</h2>
 					<ul>
-						<li><code>by.select()</code></li>
+					    <li><code>by.id()</code></li>
+						<li><code>by.options()</code></li>
 						<li><code>by.partialButtonText()</code></li>
-						<li><code>elementArrayFinder.each()</code></li>
+						<li><code>element.all(locator).each(eachFunction)</code></li>
 						<li>
-							<a href="http://angular.github.io/protractor/#/api">
+							<a target="blank" href="http://angular.github.io/protractor/#/api">
 								Full list of available methods
 							</a>
 						</li>
@@ -249,7 +268,7 @@ element.all( by.css('[ng-click="openPage()"]') ).get(2).click();</code></pre>
 				<section>
 					<h2>Searching elements best practices</h2>
 					<ul>
-						<li>Take advantage of AngularJS attributes using <code>by.model</code>, <code>by.repeater</code>, etc</li>
+						<li>Take advantage of AngularJS attributes using <code>by.model</code>,<code>by.binding</code>, <code>by.repeater</code>, etc</li>
 						<li>Avoid using potential CSS attributes, mainly IDs and Classes.</li>
 					</ul>
 				</section>
@@ -267,9 +286,9 @@ element.all( by.css('[ng-click="openPage()"]') ).get(2).click();</code></pre>
 				</section>
 
 				<section>
-					<h2>On Enter Press</h2>
+					<h2><code>.sendKeys()</code></h2>
 					<h3 style="font-size:1em">In your test</h3>
-					<pre class="mb-30"><code>element( by.model('commentText') ).sendKeys("Hi!", protractor.Key.ENTER);</code></pre>
+					<pre class="mb-30"><code>element( by.model('commentText') ).sendKeys("Hi!");</code></pre>
 					<h3 style="font-size:1em">In your application</h3>
 					<pre><code>&lt;textarea ng-model="commentText">&lt;textarea></code></pre>
 				</section>
@@ -318,9 +337,9 @@ element( by.model('zipcode') ).getText()
 						<li>This starts a selenium standalone server and puts the terminal into a read–eval–print loop (REPL).</li>
 						<li>For interactive invoking of webdriver commands</li>
 						
-						<li>Press 'tab' for list of locator strategies and play with any element locator.</li>
+						<li>Press 'tab' for list of locator strategies.</li>
 						<li>
-				            <a href="http://angular.github.io/protractor/#/debugging">
+				            <a target="blank" href="http://angular.github.io/protractor/#/debugging">
 				                Find out more.
 				            </a>
 				        </li>
@@ -335,9 +354,19 @@ element( by.model('zipcode') ).getText()
 				<section>
 					<h2>The big picture</h2>
 					<ul>
-						<li><strong>Page Objects</strong> - These are the js files where you map the elements and write the functions to perform actions;</li>
-						<li><strong>Exports and Require</strong> - This is how you connect your Page Objects to your Test Specs;</li>
+						<li><strong>Page Objects</strong> - These are the js files following the Page Object pattern to represent the screens of your web app as a series of objects.</li>
+						<li><strong>Exports and Require</strong> - This is how you connect your Page Objects to your Test Specs.</li>
 						<li><strong>Test specs</strong> - These are the js files where you write your tests using jasmine syntax.</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Why Page objects</h2>
+					<ul>
+						<li>To see more <strong>Domain Specific Language (DSL)</strong> in the test specs.</li>
+						<li>To avoid <strong>Code Duplication</strong>.</li>
+						<li>To avoid <strong>High Coupling</strong>, and be flexible enough to be ready for change.</li>
+						<li>And <strong>Easy Maintenance</strong> in long run.</li>
 					</ul>
 				</section>
 
@@ -366,35 +395,44 @@ element( by.model('zipcode') ).getText()
 
 				<section>
 					<h2 class="slide-header">Page Objects</h2>
-					<pre><code data-trim>var AngularHomepage = function() {
-  this.nameInput = element(by.model('yourName'));
-  this.greeting = element(by.binding('yourName'));
+					<pre><code data-trim>
+					//homepage.po.js
+					var AngularHomepage = function() {
+					};
 
-  this.get = function() {
-    browser.get('http://www.angularjs.org');
-  };
+					AngularHomepage.prototype = Object.create({}, {
 
-  this.setName = function(name) {
-    this.nameInput.sendKeys(name);
-  };
-};</code></pre>
+					nameInput: { get: function() { return element(by.model('yourName')); }},
+					greeting: { get: function() { return element(by.binding('yourName')); }},
+					
+					setName: { value: function(value) { return this.nameInput.sendKeys(name); }}
+					});
+
+					module.exports = AngularHomepage;
+					</code></pre>
 				</section>
 
 				<section>
 					<h2 class="slide-header">Node.JS exports and require</h2>
 					<strong>Your Page Object file</strong>
-					<pre><code>var AngularHomepage = function() {
-  this.nameInput = element(by.model('yourName'));
-  this.greeting = element(by.binding('yourName'));
-  // ...
-};
-module.exports = AngularHomepage;
+					<pre><code>
+					//homepage.po.js
+					var AngularHomepage = function() {
+					};
+
+					AngularHomepage.prototype = Object.create({}, {
+
+					nameInput: { get: function() { return element(by.model('yourName')); }},
+					//..
+					setName: { value: function(value) { return this.nameInput.sendKeys(name); }}
+					});
+					module.exports = AngularHomepage;
 </code></pre>
 					<strong>Your Test file</strong>
 <pre><code>var AngularHomepage = require('./homepage.po.js');
 describe('HomePage Tests', function() {
    var angularHomepage = new AngularHomepage();
-   angularHomepage.nameInput.sendKeys('Rafael');
+   angularHomepage.setName('Julie');
    //...
 });
 </code></pre>
@@ -407,7 +445,7 @@ describe('HomePage Tests', function() {
 				<section>
 					<h2 class="slide-header">Separate your tests in various test suites</h2>
 <pre><code data-trim>exports.config = {
-  seleniumAddress: 'http://localhost:4444/wd/hub',
+  directConnect: true,
   capabilities: { 'browserName': 'chrome' },
 
   suites: {
@@ -426,7 +464,7 @@ describe('HomePage Tests', function() {
 				<section>
 					<h2 class="slide-header">Enable <code>multiCapabilities</code></h2>
 					<pre><code>exports.config = {
-  seleniumAddress: 'http://localhost:4444/wd/hub',
+  directConnect: true,
 
   multiCapabilities: [
 	{
@@ -449,14 +487,15 @@ describe('HomePage Tests', function() {
 						<h2 class="slide-header">Using <code>onPrepare</code></h2>
 						<p><strong>Set window size before starting the tests</strong></p>
 					<pre><code data-trim>exports.config = {
-  seleniumAddress: 'http://localhost:4444/wd/hub',
+  directConnect: true,
 
   capabilities: {
     'browserName': 'chrome'
   },
 
   onPrepare: function() {
-     browser.driver.manage().window().setSize(1600, 800);
+     browser.manage().window().setPosition(0, 0);
+     browser.manage().window().maximize();
   },
 
   jasmineNodeOpts: {
@@ -497,7 +536,7 @@ exports.config = {
 					<h2 class="slide-header">Using <code>params</code></h2>
 					<p>Your protractor.conf.js</p>
 					<pre><code data-trim>exports.config = {
-  seleniumAddress: 'http://localhost:4444/wd/hub',
+  directConnect: true,
 
   capabilities: { 'browserName': 'chrome' },
 
@@ -534,7 +573,7 @@ exports.config = {
 				<section>
 					<h2 class="slide-header">Using <code>jasmineNodeOpts</code></h2>
 					<pre class="mb-30"><code data-trim>exports.config = {
-  seleniumAddress: 'http://localhost:4444/wd/hub',
+  directConnect: true,
 
   capabilities: { 'browserName': 'chrome' },
 
@@ -558,27 +597,14 @@ exports.config = {
 
 				<section>
 					<h2>Just kidding, of course<br> you can! :)</h2>
-					<p style="font-size:.8em;margin-bottom:50px;">You only need to access the webdriver instance by using <code>browser.driver</code>:</p>
-					<pre class="mb-30"><code>
-browser.driver.findElement(by.css('[data-ptor="submit-btn"]'));
-					</code></pre>
-				</section>
-
-				<section>
-					<h2>It can be even more elegant</h2>
-					<h3 style="font-size:1em">In your config.js</h3>
-<pre class="mb-30"><code>onPrepare: function() {
-   global.dvr = browser.driver;
-}</code></pre>
-					<h3 style="font-size:1em">In your test</h3>
-					<pre><code>dvr.findElement(by.css('[data-ptor="submit-btn"]'));</code></pre>
+					
 				</section>
 
 				<section>
 					<h2>Protractor waits for Angular to finish its work</h2>
 					<p style="font-size:.9em;">Though you can tell it not to be that smart about your non-Angular app:</p>
 <pre class="mb-30"><code style="font-size:1.3em;line-height:130%">beforeEach(function() {
-   return browser.ignoreSynchronization = true;
+   browser.ignoreSynchronization = true;
 });</code></pre>
 				</section>
 
@@ -599,29 +625,10 @@ browser.driver.findElement(by.css('[data-ptor="submit-btn"]'));
 
 				<section>
 					<h2 style="margin-top:70px;font-size:4em">Demo time</h2>
+					<p>Demo ngapp repo available on <a target="blank" href="https://github.com/Gaurav2Github/MyCrookedFireBase">github</a>.</p>
+					
 				</section>
 
-				<!--section>
-					<h2 class="slide-header" style="margin-bottom:.3em"><a href="https://github.com/ramonvictor/gulp-protractor-qa">gulp-protractor-qa</a></h2>
-					<p style="font-size:.6em;margin-bottom:1.4em">It warns you on the fly whether all element() selectors could be found within your AngularJS view files.</p>
-					<img style="border: none" src="https://raw.githubusercontent.com/ramonvictor/gulp-protractor-qa/master/assets/gulp-protractor-qa.gif" alt="Video screen demo of gulp-protractor-qa in action!">
-				</section>
-
-				<section>
-					<h2 style="font-size: 1.8em;">How to use <a href="https://github.com/ramonvictor/gulp-protractor-qa">gulp-protractor-qa</a>?</h2>
-					<iframe width="740" height="416" src="//www.youtube.com/embed/mhJDhIvaKJo" frameborder="0" allowfullscreen></iframe>
-				</section-->
-
-				<section>
-				    <h2 class="slide-header">The dark side of E2E testing and it's solutions</h2>
-				    <ul>
-				        <li>It needs a specific running environment<br/><strong>(use node.js, protractor, web-driver)</strong></li>
-				        <li>It's hard to write <strong>(use page objects)</strong></li>
-				        <li>It's difficult to debug <strong>(use elementexplorer)</strong></li>
-				        <li>They are fragile <strong>(use continuous integration tools)</strong></li>
-				        <li>It's hard to keep the tests up-to-date<br/><strong>(test functionality, not data)</strong></li>
-				    </ul>
-				</section>
 
 				<section>
 				    <h2 class="slide-header">Software testing pyramid</h2>
@@ -645,9 +652,9 @@ browser.driver.findElement(by.css('[data-ptor="submit-btn"]'));
 					<h2 class="slide-header">Final thoughts</h2>
 					<ul>
 						<li>E2E testing is a complement to Unit testing</li>
-						<li>Avoid using CSS attributes</li>
+						<li>Avoid using CSS attributes for searching elements</li>
 						<li>Write your tests with scalability in mind</li>
-						<li>Just have fun testing with Protractor</li>
+						<li>More over test features, not data!</li>
 					</ul>
 				</section>
 
@@ -664,11 +671,13 @@ browser.driver.findElement(by.css('[data-ptor="submit-btn"]'));
 				</section>
 
 				<section>
-					<h3 style="font-size:3em;margin-top:30px;margin-bottom:.5em">Thank you :)</h3>
+					<h3 style="font-size:3em;margin-top:30px;margin-bottom:.5em">Thank you</h3>
 					<p style="font-size:2em; margin-bottom: 2em">
-						<a href="https://github.com/gaurav2github">Gaurav Tandon</a>
+						<a target="blank" href="https://github.com/gaurav2github">Gaurav Tandon</a>
 					</p>
-					<p>Thanks to <a href="https://github.com/ramonvictor">@ramonvictor</a> for contributions!</p>
+					<p>Thanks to <a target="blank" href="http://whg.co.nz/"> WHG team <img align="right" width="150" src="img/whg.jpg"></a></p>
+					<p>for the opportunity!</p>
+
 				</section>
 			</div>
 		</div>
