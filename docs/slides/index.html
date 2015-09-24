@@ -171,7 +171,7 @@
 					<pre><code> &lt;div>
       &lt;label>Name:&lt;/label>
       &lt;input type="text" ng-model="yourName" placeholder="Enter a name here">
-      &lt;h1>Hello {yourName}!&lt;/h1>
+      &lt;h1>Hello {{yourName}}!&lt;/h1>
     &lt;/div>
 </code></pre>
 <p></p>
@@ -184,10 +184,10 @@ describe('by model', function() {
      var greeting = element(by.binding('yourName'));
 
      yourName.clear();
-     expect(greeting.getText()).toEqual('');
+     expect(greeting.getText()).toEqual('Hello !');
 
      yourName.sendKeys('Jasmine');
-     expect(greeting.getText()).toEqual('Jasmine');
+     expect(greeting.getText()).toEqual('Hello Jasmine!');
    });
 });</code></pre>
 
@@ -219,7 +219,7 @@ element.all(by.repeater('result in memory')).count();</code></pre>
 					<h3 style="font-size:1em">In your application</h3>
 					<pre><code>&lt;span ng-bind="myModel">&lt;/span>
 &lt;!-- or -->
-&lt;span>{myModel}&lt;/span>
+&lt;span>{{myModel}&lt;/span>
 </code></pre>
 				</section>
 
@@ -237,7 +237,7 @@ element.all(by.repeater('result in memory')).count();</code></pre>
 					<h3 style="font-size:1em">In your application</h3>
 					<pre><code>&lt;ul>
   &lt;li ng-repeat="user in users">
-      &lt;span>{user.name}&lt;/span>
+      &lt;span>{{user.name}}&lt;/span>
   &lt;/li>
 &lt;/ul></code></pre>
 				</section>
@@ -358,7 +358,7 @@ element( by.model('zipcode') ).getText()
 					<ul>
 						<li><strong>Page Objects</strong> - These are the js files following the Page Object pattern to represent the screens of your web app as a series of objects.</li>
 						<li><strong>Exports and Require</strong> - This is how you connect your Page Objects to your Test Specs.</li>
-						<li><strong>Test specs</strong> - These are the js files where you write your tests using jasmine syntax.</li>
+						
 					</ul>
 				</section>
 
@@ -376,15 +376,14 @@ element( by.model('zipcode') ).getText()
 					<h2 class="slide-header">Page Objects</h2>
 					<pre><code data-trim>
 					//homepage.po.js
-					var AngularHomepage = function() {
-					};
+					var AngularHomepage = function() {};
 
 					AngularHomepage.prototype = Object.create({}, {
 
 					nameInput: { get: function() { return element(by.model('yourName')); }},
 					greeting: { get: function() { return element(by.binding('yourName')); }},
 					
-					setName: { value: function(value) { return this.nameInput.sendKeys(name); }}
+					setName: { value: function(value) { return this.nameInput.sendKeys(name);}}
 					});
 
 					module.exports = AngularHomepage;
@@ -393,20 +392,7 @@ element( by.model('zipcode') ).getText()
 
 				<section>
 					<h2 class="slide-header">Node.JS exports and require</h2>
-					<strong>Your Page Object file</strong>
-					<pre><code>
-					//homepage.po.js
-					var AngularHomepage = function() {
-					};
-
-					AngularHomepage.prototype = Object.create({}, {
-
-					nameInput: { get: function() { return element(by.model('yourName')); }},
-					//..
-					setName: { value: function(value) { return this.nameInput.sendKeys(value); }}
-					});
-					module.exports = AngularHomepage;
-</code></pre>
+					
 					<strong>Your Test file</strong>
 <pre><code>var AngularHomepage = require('./homepage.po.js');
 describe('HomePage Tests', function() {
