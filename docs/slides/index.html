@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Protractor for AngularJS Apps: Writing end-to-end tests has never been so easy</title>
+		<title>Using Protractor for AngularJS Apps: Writing end-to-end tests has never been so easy</title>
 
 		<meta name="description" content="A step-by-step presentaion on Protractor End-to-End Testing for AngularJS">
 		<meta name="author" content="Gaurav Tandon | @gaurav2github">
@@ -61,7 +61,7 @@
 					<blockquote style="line-height:1.2em">
 						Testing is about gaining confidence that your code does what you think it should do
 					</blockquote>
-					<p><a href="https://github.com/juliemr">@juliemr</a></p>
+					<p><a target="blank" href="https://github.com/juliemr">@juliemr</a></p>
 				</section>
 
 				<section>
@@ -84,7 +84,7 @@
 				</section>
 
 				<section>
-					<h2 class="slide-header">Protractor is built on top of <a href="https://code.google.com/p/selenium/wiki/WebDriverJs">WebDriverJS</a></h2>
+					<h2 class="slide-header">Protractor is built on top of <a target="blank" href="https://code.google.com/p/selenium/wiki/WebDriverJs">WebDriverJS</a></h2>
 
 					<p style="text-align: center">
 						<strong>Testing system</strong> (NodeJS program)
@@ -105,14 +105,14 @@
 
 				<section>
 					<img src="img/protractor-architecture.png" height="500" alt="Protractor Architecture" style="border:none;box-shadow:none;margin-bottom:40px">
-					<p style="font-size: .6em;text-align: right;">Reference: <a href="http://www.thoughtworks.com//insights/blog/testing-angularjs-apps-protractor">Testing AngularJS apps with Protractor</a></p>
+					<p style="font-size: .6em;text-align: right;">Reference: <a target="blank" href="http://www.thoughtworks.com//insights/blog/testing-angularjs-apps-protractor">Testing AngularJS apps with Protractor</a></p>
 				</section>
 
 				<section>
 					<h2 class="slide-header">Install</h2>
 					<ol style="font-size:1.2em;">
 						<li>
-							Download <a href="http://nodejs.org/download/">Node.JS</a>
+							Download <a target="blank" href="http://nodejs.org/download/">Node.JS</a>
 						</li>
 						<li><code>npm install protractor -g</code></li>
 						<li><code>webdriver-manager update</code></li>
@@ -135,6 +135,8 @@
   'e2e/specs/*.js'
   ],
 
+  baseUrl:  'http://localhost:9000/',
+
   framework: 'jasmine2',
 
   jasmineNodeOpts: {
@@ -147,9 +149,9 @@
 				</section>
 
 				<section>
-					<h2 class="slide-header">Write your tests using <a href="http://jasmine.github.io/2.0/introduction.html">Jasmine</a> and WebdriverJS</h2>
+					<h2 class="slide-header">Write your tests using <a target="blank" href="http://jasmine.github.io/2.0/introduction.html">Jasmine</a> and WebdriverJS</h2>
 
-				<p>We will use <code>describe</code> and <code>it</code> syntax from the Jasmine framework.</p>
+				<p>We will use <code>describe</code>, <code>it</code> and <code>expect</code> syntax from the Jasmine framework.</p>
 				<p>
 				<p>And be using <code>browser</code> variable, which is a wrapper around an instance of WebDriver</p>
 				</section>
@@ -169,7 +171,7 @@
 					<pre><code> &lt;div>
       &lt;label>Name:&lt;/label>
       &lt;input type="text" ng-model="yourName" placeholder="Enter a name here">
-      &lt;h1>Hello {{yourName}}!&lt;/h1>
+      &lt;h1>Hello {yourName}!&lt;/h1>
     &lt;/div>
 </code></pre>
 <p></p>
@@ -194,7 +196,7 @@ describe('by model', function() {
 				<section>
 					<h2 class="slide-header">Let's run it?</h2>
 					<p>You can run Protractor on a terminal by typing:</p>
-					<pre><code>protractor test/e2e/protractor.conf.js // this is the relative path to your config file</code></pre>
+					<pre><code>protractor test/e2e/conf.js // this is the relative path to your config file</code></pre>
 				</section>
 
 				<section>
@@ -300,7 +302,7 @@ element.all(by.repeater('result in memory')).count();</code></pre>
 
 				<section>
 					<h2>Promises based</h2>
-					<p>All Protractor methods are asynchronous and return <a href="https://www.promisejs.org/">promises</a>.</p>
+					<p>All Protractor methods are asynchronous and return <a target="blank" href="https://www.promisejs.org/">promises</a>.</p>
 <pre><code style="font-size:1.2em;line-height:150%">// Example of getText() promise
 element( by.model('zipcode') ).getText()
   .then(function(val) {
@@ -313,7 +315,7 @@ element( by.model('zipcode') ).getText()
 
 				<section>
 					<h2>Control Flow</h2>
-					<p>WebDriverJS maintains a queue of pending promises, called the <a href="https://github.com/angular/protractor/blob/master/docs/control-flow.md">control flow</a>, to keep execution organized. </p>
+					<p>WebDriverJS maintains a queue of pending promises, called the <a target="blank" href="https://github.com/angular/protractor/blob/master/docs/control-flow.md">control flow</a>, to keep execution organized. </p>
 <pre><code>it('should find an element by text input model', function() {
   browser.get('#/home'); // (1) method browser.get
 
@@ -339,7 +341,7 @@ element( by.model('zipcode') ).getText()
 						
 						<li>Press 'tab' for list of locator strategies.</li>
 						<li>
-				            <a target="blank" href="http://angular.github.io/protractor/#/debugging">
+				            <a target="blank" target="blank" href="http://angular.github.io/protractor/#/debugging">
 				                Find out more.
 				            </a>
 				        </li>
@@ -368,29 +370,6 @@ element( by.model('zipcode') ).getText()
 						<li>To avoid <strong>High Coupling</strong>, and be flexible enough to be ready for change.</li>
 						<li>And <strong>Easy Maintenance</strong> in long run.</li>
 					</ul>
-				</section>
-
-				<section>
-					<h2 class="slide-header">Tests directory structure</h2>
-<pre><code style="font-size:1.1em;line-height:130%">projectfolder/
-  |-- css/
-  |-- js/
-  |-- img/
-  |-- tests/
-    |-- unit/
-    |-- e2e/
-    |    |-- authentication/
-    |    |     |-- *.spec.js
-    |    |-- jobs/
-    |    |     |-- *.spec.js
-    |    |-- pages/
-    |    |     |-- home.page.js
-    |    |     |-- login.page.js
-    |    |     |-- register.page.js
-    |    |     |-- jobs.list.apply.page.js
-    |    |     |-- *.page.js
-    |    |-- protractor.conf.js
-</code></pre>
 				</section>
 
 				<section>
@@ -424,7 +403,7 @@ element( by.model('zipcode') ).getText()
 
 					nameInput: { get: function() { return element(by.model('yourName')); }},
 					//..
-					setName: { value: function(value) { return this.nameInput.sendKeys(name); }}
+					setName: { value: function(value) { return this.nameInput.sendKeys(value); }}
 					});
 					module.exports = AngularHomepage;
 </code></pre>
@@ -437,6 +416,31 @@ describe('HomePage Tests', function() {
 });
 </code></pre>
 				</section>
+
+
+				<section>
+					<h2 class="slide-header">Tests directory structure</h2>
+<pre><code style="font-size:1.1em;line-height:130%">projectfolder/
+  |-- css/
+  |-- js/
+  |-- img/
+  |-- tests/
+    |-- unit/
+    |-- e2e/
+    |    |-- authentication/
+    |    |     |-- *.spec.js
+    |    |-- jobs/
+    |    |     |-- *.spec.js
+    |    |-- pages/
+    |    |     |-- home.page.js
+    |    |     |-- login.page.js
+    |    |     |-- register.page.js
+    |    |     |-- jobs.list.apply.page.js
+    |    |     |-- *.page.js
+    |    |-- protractor.conf.js
+</code></pre>
+				</section>
+
 
 				<section>
 					<h2 style="font-size:3em;margin-top:100px">Go further!</h2>
@@ -495,6 +499,7 @@ describe('HomePage Tests', function() {
 
   onPrepare: function() {
      browser.manage().window().setPosition(0, 0);
+     browser.manage().window().setSize(1600, 800);
      browser.manage().window().maximize();
   },
 
@@ -506,7 +511,7 @@ describe('HomePage Tests', function() {
 				<section>
 					<h2>Using <code>onPrepare</code></h2>
 					<p><strong>Get HTML report and Capture a screenshot of failed specs of your Automated Suites.</strong></p>
-					<p style="text-align:left;font-size:.8em;">First, install <a href="https://www.npmjs.com/package/protractor-jasmine2-screenshot-reporter">protractor-jasmine2-screenshot-reporter</a>:</p>
+					<p style="text-align:left;font-size:.8em;">First, install <a target="blank" href="https://www.npmjs.com/package/protractor-jasmine2-screenshot-reporter">protractor-jasmine2-screenshot-reporter</a>:</p>
 					<pre class="mb-30"><code data-trim>npm install protractor-jasmine2-screenshot-reporter --save-dev</code></pre>
 					
 				</section>
@@ -585,7 +590,7 @@ exports.config = {
   }
 };</code></pre>
 					<p>
-						<a href="https://github.com/angular/protractor/blob/master/docs/referenceConf.js">See a full list of available options for a config.js
+						<a target="blank" href="https://github.com/angular/protractor/blob/master/docs/referenceConf.js">See a full list of available options for a config.js
 						</a>
 					</p>
 				</section>
@@ -596,7 +601,7 @@ exports.config = {
 				</section>
 
 				<section>
-					<h2>Just kidding, of course<br> you can! :)</h2>
+					<h2 style="margin-top: 30px;font-size:3em">Just kidding, of course<br> you can! :)</h2>
 					
 				</section>
 
@@ -620,11 +625,11 @@ exports.config = {
 <pre class="mb-30"><code>beforeEach(function() {
    isAngularSite(false); // isAngularSite(true), if it's an Angular app!
 });</code></pre>
-					<p style="font-size:.6em;text-align:right;">Reference: <a href="http://ng-learn.org/2014/02/Protractor_Testing_With_Angular_And_Non_Angular_Sites/">Protractor - Testing Angular and Non-Angular Sites</a></p>
+					<p style="font-size:.6em;text-align:right;">Reference: <a target="blank" href="http://ng-learn.org/2014/02/Protractor_Testing_With_Angular_And_Non_Angular_Sites/">Protractor - Testing Angular and Non-Angular Sites</a></p>
 				</section>
 
 				<section>
-					<h2 style="margin-top:70px;font-size:4em">Demo time</h2>
+					<h2 class="slide-header" style="margin-top:70px;font-size:4em">Demo time</h2>
 					<p>Demo ngapp repo available on <a target="blank" href="https://github.com/Gaurav2Github/MyCrookedFireBase">github</a>.</p>
 					
 				</section>
@@ -634,7 +639,7 @@ exports.config = {
 				    <h2 class="slide-header">Software testing pyramid</h2>
 				    <img src="img/automated-testing-pyramid.png"/>
 
-				    <p>Reference: <a href="http://watirmelon.com/2011/06/10/yet-another-software-testing-pyramid/">http://watirmelon.com/2011/06/10/yet-another-software-testing-pyramid/</a>
+				    <p>Reference: <a target="blank" href="http://watirmelon.com/2011/06/10/yet-another-software-testing-pyramid/">http://watirmelon.com/2011/06/10/yet-another-software-testing-pyramid/</a>
 				    </p>
 				</section>
 
@@ -642,7 +647,7 @@ exports.config = {
 				    <h2>Software testing pyramid</h2>
 				    <img src="img/business-technology-automated-testing-pyramid.png"/>
 
-				    <p>Reference: <a href="http://watirmelon.com/2011/06/10/yet-another-software-testing-pyramid/">http://watirmelon.com/2011/06/10/yet-another-software-testing-pyramid/</a>
+				    <p>Reference: <a target="blank" href="http://watirmelon.com/2011/06/10/yet-another-software-testing-pyramid/">http://watirmelon.com/2011/06/10/yet-another-software-testing-pyramid/</a>
 				    </p>
 				</section>
 
@@ -661,12 +666,12 @@ exports.config = {
 				<section>
 					<h2 class="slide-header">Learning Resources</h2>
 					<ul>
-						<li><a href="http://protractortest.org">Protractortest.org</a></li>
-						<li><a href="https://github.com/angular/protractor/blob/master/docs/toc.md">Official Getting Started at Github</a></li>
-						<li><a href="http://www.youtube.com/watch?v=aQipuiTcn3U">NG-Conf 2014 - End to End Angular Testing</a></li>
-						<li><a href="https://www.youtube.com/watch?v=_2Pt6Xx94Bc">NG-Conf 2015 - Accessibility Design Made Easy</a></li>
-						<li><a href="https://www.youtube.com/watch?v=idb6hOxlyb8">An Introduction to AngularJS E2E Testing with Protractor</a></li>
-						<li><a href="http://www.ng-newsletter.com/posts/practical-protractor.html">Practical End-to-End Testing with Protractor</a></li>
+						<li><a target="blank" href="http://protractortest.org">Protractortest.org</a></li>
+						<li><a target="blank" href="https://github.com/angular/protractor/blob/master/docs/toc.md">Official Getting Started at Github</a></li>
+						<li><a target="blank" href="http://www.youtube.com/watch?v=aQipuiTcn3U">NG-Conf 2014 - End to End Angular Testing</a></li>
+						<li><a target="blank" href="https://www.youtube.com/watch?v=_2Pt6Xx94Bc">NG-Conf 2015 - Accessibility Design Made Easy</a></li>
+						<li><a target="blank" href="https://www.youtube.com/watch?v=idb6hOxlyb8">An Introduction to AngularJS E2E Testing with Protractor</a></li>
+						<li><a target="blank" href="http://www.ng-newsletter.com/posts/practical-protractor.html">Practical End-to-End Testing with Protractor</a></li>
 					</ul>
 				</section>
 
@@ -682,7 +687,7 @@ exports.config = {
 			</div>
 		</div>
 		<iframe src="http://ghbtns.com/github-btn.html?user=gaurav2github&repo=protractor&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20" style="position: absolute; top: 20px; left: 20px; z-index: 9999"></iframe>
-		<a href="https://github.com/gaurav2github/protractor" style="position: absolute; top: 0; right: 0; z-index: 9999">
+		<a target="blank" href="https://github.com/gaurav2github/protractor" style="position: absolute; top: 0; right: 0; z-index: 9999">
 			<img style="border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png">
 		</a>
 
